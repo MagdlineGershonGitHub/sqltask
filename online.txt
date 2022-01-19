@@ -1,0 +1,80 @@
+create database onlineshop;
+use onlineshop;
+CREATE TABLE users( 
+customer_id int AUTO_INCREMENT,
+first_name varchar(50) NOT NULL,
+Last_name varchar(100) NOT NULL,
+address varchar(100) NOT NULL,
+primary key (customer_id)
+);
+CREATE TABLE products (
+product_id int auto_increment,
+productname varchar(50) NOT NULL,
+quantity int NOT NULL,
+price decimal(6,2) NOT NULL,
+primary key (product_id)
+);
+CREATE TABLE orders(
+order_id int AUTO_INCREMENT,
+customer_id int NOT NULL,
+product_id int NOT NULL,
+dateplaced date not null,
+price float NOT NULL,
+primary key (order_id),
+FOREIGN KEY (customer_id) REFERENCES users(customer_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+CREATE TABLE orderline(
+orderline_id int AUTO_INCREMENT,
+order_id int NOT NULL,
+product_id int NOT NULL,
+primary key (orderline_id),
+FOREIGN KEY (order_id) REFERENCES orders(order_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+use onlineshop;
+show tables;
+INSERT INTO users(first_name, Last_name,address) values ("Maggi","Deena","14 Grange House");
+INSERT INTO users (first_name, Last_name,address) values ("Davi","Deena","24 Grange House");
+INSERT INTO users (first_name, Last_name,address) values ("Nathan","john","34 kalli House");
+INSERT INTO users (first_name, last_name,address) values ("Chitra","Rajesh","34 leo street");
+INSERT INTO users(first_name, last_name,address) values ("Pradeep","Bhoopalan","67 Winsdor street");
+INSERT INTO products(productname,quantity,price) values ("asda",5,23.56);
+INSERT INTO products(productname,quantity,price) values ("sainsbury",4,56.70);
+INSERT INTO products(productname,quantity,price) values ("morrisons",8,38.99);
+INSERT INTO products(productname,quantity,price) values ("matlan",10,50.56);
+INSERT INTO products(productname,quantity,price) values ("mark and spencers",7,19.56);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (1,1,"2000-03-14",34.78);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (2,1,"1990-02-21",56.88);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (3,2,"2011-06-24",56.99);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (2,3,"2021-08-27",80.88);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (3,4,"2020-09-10",67.99);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (4,1,"2001-01-27",289.78);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (5,1,"1990-05-20",21.88);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (4,2,"2011-08-24",86.29);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (5,3,"2021-10-29",66.71);
+INSERT INTO orders(customer_id,product_id,dateplaced,price) values (1,4,"2020-11-30",78.99);
+INSERT INTO orderline(order_id,product_id) values (1,1);
+INSERT INTO orderline(order_id,product_id) values (2,1);
+INSERT INTO orderline(order_id,product_id) values (3,2);
+INSERT INTO orderline(order_id,product_id) values (2,3);
+INSERT INTO orderline(order_id,product_id) values (4,4);
+INSERT INTO orderline(order_id,product_id) values (5,3);
+INSERT INTO orderline(order_id,product_id) values (5,4);
+select * from users;
+select * from products;
+select * from orders;
+select * from orderline;
+select * from users c join orders e ON c.customer_id = e.customer_id join
+products f on f.product_id=e.product_id where last_name like "D%";
+select productname,sum(price) from products where price>=30;
+select count(distinct customer_id) from users;
+SELECT COUNT(product_id) FROM products WHERE u.last_name = 'Deena';
+SELECT * FROM users ORDER BY Last_name DESC LIMIT 3;
+select productname, price from products where price=(select min(price) from products where price >10);
+set sql_safe_updates=0;
+update users set Last_name ="Gershon" where Last_name="Deena";
+select first_name, Last_name from users where Last_name="Gershon";
+SELECT p.productname, p.price FROM products p JOIN orders o ON o.order_id=p.product_id WHERE o.price >10 
+ORDER BY p.productname DESC LIMIT 2;
+
