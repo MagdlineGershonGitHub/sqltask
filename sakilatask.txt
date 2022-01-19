@@ -1,0 +1,40 @@
+use sakila;
+select * from actor;
+select * from actor where first_name ="JOHN";
+select * from actor where last_name ="NEESON";
+SELECT * FROM actor WHERE (actor_id % 10) = 0;
+select film_id, description from film_text where film_id=100;
+select * from film_text;
+select * from film_category;
+select * from film;
+select title,rating from film where rating="R";
+select rating, title from film where rating!="R";
+select title, length FROM film ORDER BY length LIMIT 10;
+select title, length from film where length =(select max(length) from film );
+select * from film where special_features LIKE "%Deleted Scenes%";
+select last_name from actor GROUP BY last_name HAVING COUNT(last_name)=1 ORDER BY last_name DESC;
+select last_name from actor GROUP BY last_name HAVING COUNT(last_name) > 1 ORDER BY COUNT(last_name) DESC;
+select a.first_name, a.last_name FROM actor a JOIN film_actor f ON a.actor_id=f.actor_id GROUP BY a.actor_id
+ORDER BY COUNT(film_id) DESC LIMIT 1;
+SELECT AVG(length) AS avgruntime from film;
+select * FROM category;
+SELECT c.name, AVG(f.length) FROM category c JOIN film_category fc JOIN film f ON c.category_id=fc.category_id
+AND fc.film_id=f.film_id GROUP BY c.name;
+select title, description FROM film WHERE description LIKE "%robot%";
+select * from film;
+select COUNT(film_id) AS released2010 FROM film WHERE release_year = 2010;
+select f.title, c.name from film f JOIN film_category fc JOIN category c ON c.category_id=fc.category_id
+AND fc.film_id=f.film_id WHERE c.name = "Horror";
+select * from staff;
+select CONCAT(first_name, " ", last_name) AS fullname FROM staff WHERE staff_id = 2;
+select * from actor;
+select f.title, CONCAT(first_name, " ", last_name) AS actorname FROM film f JOIN film_actor fa JOIN actor a
+ON f.film_id=fa.film_id AND fa.actor_id=a.actor_id 	WHERE last_name LIKE "%costner%" AND first_name LIKE "%fred%";
+select count(distinct(country)) as distinctcountries from country;
+select * from language;
+select name from language order by name desc;
+select CONCAT(first_name, " ", last_name) AS fullname from actor where last_name LIKE "%son"
+ORDER BY first_name;
+select * from category;
+select c.name from category c JOIN film_category fc JOIN film f ON c.category_id=fc.category_id
+AND fc.film_id=f.film_id group by c.name order by COUNT(c.name) DESC LIMIT 1;
